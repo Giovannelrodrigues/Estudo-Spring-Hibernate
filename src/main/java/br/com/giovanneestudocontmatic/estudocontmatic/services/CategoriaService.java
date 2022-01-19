@@ -2,8 +2,10 @@ package br.com.giovanneestudocontmatic.estudocontmatic.services;
 
 import br.com.giovanneestudocontmatic.estudocontmatic.domain.Categoria;
 import br.com.giovanneestudocontmatic.estudocontmatic.repositories.CategoriaRepository;
+import br.com.giovanneestudocontmatic.estudocontmatic.services.exceptions.DataIntegrityException;
 import br.com.giovanneestudocontmatic.estudocontmatic.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,9 +31,19 @@ public class CategoriaService {
         return categoriaRepository.save(categoria);
     }
 
-    public Categoria update(Categoria categoria){
+    public void update(Categoria categoria){
         findOne(categoria.getId());
-        return categoriaRepository.save(categoria);
+        categoriaRepository.save(categoria);
     }
+
+    public void delete(Integer id){
+        findOne(id);
+        try{
+            categoriaRepository.deleteById(id);
+        }catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityException("Não é possivel excluir categorias com produtos");
+        }
+    }
+
 
 }
