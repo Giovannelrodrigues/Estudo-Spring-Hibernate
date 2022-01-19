@@ -1,6 +1,7 @@
 package br.com.giovanneestudocontmatic.estudocontmatic.resources;
 
 import br.com.giovanneestudocontmatic.estudocontmatic.domain.Categoria;
+import br.com.giovanneestudocontmatic.estudocontmatic.dto.CategoriaDTO;
 import br.com.giovanneestudocontmatic.estudocontmatic.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/categorias")
@@ -18,9 +20,10 @@ public class CategoriaResource {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity<List<Categoria>> index(){
+    public ResponseEntity<List<CategoriaDTO>> index(){
         List<Categoria> categorias = categoriaService.find();
-        return ResponseEntity.ok().body(categorias);
+        List<CategoriaDTO> categoriaDTOS = categorias.stream().map(CategoriaDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok().body(categoriaDTOS);
     }
 
     @GetMapping(value = "/{id}")
