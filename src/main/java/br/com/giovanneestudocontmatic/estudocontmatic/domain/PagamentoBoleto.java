@@ -1,5 +1,6 @@
 package br.com.giovanneestudocontmatic.estudocontmatic.domain;
 
+import br.com.giovanneestudocontmatic.estudocontmatic.domain.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,9 +32,9 @@ public class PagamentoBoleto implements Serializable {
     public PagamentoBoleto() {
     }
 
-    public PagamentoBoleto(Integer id, Integer estado, Date dataVencimento, Date dataPagamento, Pedido pedido) {
+    public PagamentoBoleto(Integer id, EstadoPagamento estado, Date dataVencimento, Date dataPagamento, Pedido pedido) {
         this.id = id;
-        this.estado = estado;
+        this.estado = estado == null? null : estado.getCodigo();
         this.dataVencimento = dataVencimento;
         this.dataPagamento = dataPagamento;
         this.pedido = pedido;
@@ -48,12 +49,12 @@ public class PagamentoBoleto implements Serializable {
         this.id = id;
     }
 
-    public Integer getEstado() {
-        return estado;
+    public EstadoPagamento getEstado() {
+        return EstadoPagamento.toEnum(estado);
     }
 
-    public void setEstado(Integer estado) {
-        this.estado = estado;
+    public void setEstado(EstadoPagamento estado) {
+        this.estado = estado.getCodigo();
     }
 
     public Date getDataVencimento() {

@@ -1,6 +1,7 @@
 package br.com.giovanneestudocontmatic.estudocontmatic.services;
 
 import br.com.giovanneestudocontmatic.estudocontmatic.domain.Categoria;
+import br.com.giovanneestudocontmatic.estudocontmatic.domain.Cliente;
 import br.com.giovanneestudocontmatic.estudocontmatic.dto.CategoriaDTO;
 import br.com.giovanneestudocontmatic.estudocontmatic.repositories.CategoriaRepository;
 import br.com.giovanneestudocontmatic.estudocontmatic.services.exceptions.DataIntegrityException;
@@ -36,7 +37,8 @@ public class CategoriaService {
     }
 
     public void update(Categoria categoria){
-        findOne(categoria.getId());
+        Categoria newCategoria = findOne(categoria.getId());
+        updateData(newCategoria, categoria);
         categoriaRepository.save(categoria);
     }
 
@@ -57,6 +59,10 @@ public class CategoriaService {
 
     public Categoria fromDTO(CategoriaDTO categoriaDTO){
         return  new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
+    }
+
+    private void updateData(Categoria newCategoria, Categoria categoria) {
+        newCategoria.setNome(categoria.getNome());
     }
 
 
